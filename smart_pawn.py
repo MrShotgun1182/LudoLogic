@@ -18,3 +18,20 @@ class SmartPawn:
     def move(self, player, rolled_number):
         target_pawns_df = self.main_df[~self.main_df['pawn_id'].str.startswith(F"P{player}_")]
         loc_target_pawns = target_pawns_df["loc"].values
+    
+    # private methods:
+
+    def __can_hit(self, pawn_id, rolled_number, loc_target_pawns):
+        loc_pawn = self.main_df.loc[self.main_df["pawn_id"] == pawn_id, "loc"].values[0]
+        if loc_pawn in ["not in game", "finish game"]:
+            return 0
+        
+        loc_pawn += rolled_number
+        if loc_pawn > 47:
+            loc_pawn = loc_pawn - 47
+            # 47, Number of houses in the game
+        
+        if loc_pawn in loc_target_pawns:
+            return 1
+        else:
+            return 0
