@@ -14,3 +14,7 @@ class SmartPawn:
             "mode": pawns_mode,
             "loc": initial_loc
         })
+
+    def move(self, player, rolled_number):
+        target_pawns_df = self.main_df[~self.main_df['pawn_id'].str.startswith(F"P{player}_")]
+        loc_target_pawns = target_pawns_df["loc"].values
