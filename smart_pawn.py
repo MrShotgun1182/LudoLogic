@@ -43,4 +43,22 @@ class SmartPawn:
             return 1
         else:
             return 0
+        
+    def __can_end_round(self, pawn_id, rolled_number):
+        player = pawn_id[:2]
+        loc_pawn = self.main_df.loc[self.main_df['pawn_id'] == pawn_id, "loc"].values[0]
+        for i in range(1, rolled_number+1):
+            loc_pawn += 1
+            if loc_pawn == self.home_zone[player]:
+                num_home_zone_pawn = (rolled_number - i) + 1
+                if num_home_zone_pawn in [1, 2, 3, 4]: 
+                    full_home_zone = self.main_df[self.main_df["pawn_id"].str.startswith(player)]["num_home_zone"].values
+                    if not num_home_zone_pawn in full_home_zone:
+                        return 1
+                    else: 
+                        return 0
+                else:
+                    return 0
+            else:
+                return 0
     
