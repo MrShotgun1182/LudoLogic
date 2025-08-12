@@ -18,8 +18,24 @@ class SmartPawn:
     def move(self, player, rolled_number):
         target_pawns_df = self.main_df[~self.main_df['pawn_id'].str.startswith(F"P{player}_")]
         loc_target_pawns = target_pawns_df["loc"].values
+
+        pawns_profile = pd.DataFrame(
+            self.__make_pawns_profile(player, rolled_number, target_pawns_df, loc_target_pawns),
+            index=[f"P{player}_pawn{i}" for i in range(4)]
+        )        
+        print(pawns_profile)
     
     # private methods:
+
+    def __make_pawns_profile(self, player, rolled_number, target_pawns_df, loc_target_pawns):
+        can_hit = [self.__can_hit(F"P{player}_pawn{i}", rolled_number, loc_target_pawns) for i in range(4)]
+        can_come_in_game = [self.__can_come_in_game(F"P{player}_pawn{i}") for i in range(4)]
+        can_end_round = [self.__can_end_round(F"P{player}_pawn{i}", rolled_number) for i in range(4)]
+
+        return {"can_hit": can_hit,
+                "can_come_in_game": can_come_in_game,
+                "can_end_round": can_end_round}
+
 
     def __can_hit(self, pawn_id, rolled_number, loc_target_pawns):
         loc_pawn = self.main_df.loc[self.main_df["pawn_id"] == pawn_id, "loc"].values[0]
