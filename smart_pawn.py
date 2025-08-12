@@ -28,11 +28,19 @@ class SmartPawn:
     # private methods:
 
     def __make_pawns_profile(self, player, rolled_number, target_pawns_df, loc_target_pawns):
+        can_move = [self.__can_move(F"P{player}_pawn{i}") for i in range(4)]
+
         can_hit = [self.__can_hit(F"P{player}_pawn{i}", rolled_number, loc_target_pawns) for i in range(4)]
-        can_come_in_game = [self.__can_come_in_game(F"P{player}_pawn{i}") for i in range(4)]
+
+        if rolled_number == 6:
+            can_come_in_game = [self.__can_come_in_game(F"P{player}_pawn{i}") for i in range(4)]
+        else:
+            can_come_in_game = [0 for _ in range(4)]
+        
         can_end_round = [self.__can_end_round(F"P{player}_pawn{i}", rolled_number) for i in range(4)]
 
-        return {"can_hit": can_hit,
+        return {"can_move": can_move,
+                "can_hit": can_hit,
                 "can_come_in_game": can_come_in_game,
                 "can_end_round": can_end_round}
 
