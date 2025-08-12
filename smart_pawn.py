@@ -43,7 +43,13 @@ class SmartPawn:
                 "can_hit": can_hit,
                 "can_come_in_game": can_come_in_game,
                 "can_end_round": can_end_round}
-
+    
+    def __can_move(self, pawn_id):
+        pos_pawn = self.main_df.loc[self.main_df["pawn_id"] == pawn_id, "position"].values[0]
+        if pos_pawn == "in game":
+            return 1
+        else:
+            return 0
 
     def __can_hit(self, pawn_id, rolled_number, loc_target_pawns):
         loc_pawn = self.main_df.loc[self.main_df["pawn_id"] == pawn_id, "loc"].values[0]
