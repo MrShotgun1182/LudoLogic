@@ -67,15 +67,20 @@ class SmartPawn:
             return 0
         
     def __can_come_in_game(self, pawn_id):
-        pos_pawn = self.main_df.loc[self.main_df["pawn_id"] == pawn_id, "position"].value[0]
+        pos_pawn = self.main_df.loc[self.main_df["pawn_id"] == pawn_id, "position"].values[0]
 
         if pos_pawn == "not in game":
             return 1
         else:
             return 0
-        
+    
     def __can_end_round(self, pawn_id, rolled_number):
         player = pawn_id[:2]
+
+        pos_pawn = self.main_df.loc[self.main_df['pawn_id'] == pawn_id, "position"].values[0]
+        if pos_pawn == "not in game":
+            return 0
+        
         loc_pawn = self.main_df.loc[self.main_df['pawn_id'] == pawn_id, "loc"].values[0]
         for i in range(1, rolled_number+1):
             loc_pawn += 1
@@ -91,4 +96,4 @@ class SmartPawn:
                     return 0
             else:
                 return 0
-    
+        return 0
