@@ -7,6 +7,14 @@ class SmartPawn:
     kind = {"can_move_rate": 0.01, "can_hit_rate": 0.01, "can_come_in_game_rate": 0.7, "can_end_round_rate": 0.8}
     strategy = {"can_move_rate": 0.01, "can_hit_rate": 0.5, "can_come_in_game_rate": 0.6, "can_end_round_rate": 0.8}
     stupid = {"can_move_rate": 0.01, "can_hit_rate": 0.01, "can_come_in_game_rate": 0.8, "can_end_round_rate": 0.1}
+    home_zone = {"P0": 46,
+                "P1": 10,
+                "P2": 22,
+                "P3": 34}
+    start_zone = {"P0": 0,
+                "P1": 12,
+                "P2": 24,
+                "P3": 36}
     def __init__(self, player_mode):
         pawns = [F"P{i}_pawn{j}" for i in range(player_mode) for j in range(4)]
         pawns_mode = [mode for mode in player_mode for _ in range(4)]
