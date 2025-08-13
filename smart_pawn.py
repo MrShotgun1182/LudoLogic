@@ -8,23 +8,28 @@ class SmartPawn:
     strategy = {"can_move_rate": 0.01, "can_hit_rate": 0.5, "can_come_in_game_rate": 0.6, "can_end_round_rate": 0.8}
     stupid = {"can_move_rate": 0.01, "can_hit_rate": 0.01, "can_come_in_game_rate": 0.8, "can_end_round_rate": 0.1}
     home_zone = {"P0": 46,
-                "P1": 10,
-                "P2": 22,
-                "P3": 34}
+                  "P1": 10,
+                  "P2": 22,
+                  "P3": 34}
     start_zone = {"P0": 0,
-                "P1": 12,
-                "P2": 24,
-                "P3": 36}
+                  "P1": 12,
+                  "P2": 24,
+                  "P3": 36}
     def __init__(self, player_mode):
-        pawns = [F"P{i}_pawn{j}" for i in range(player_mode) for j in range(4)]
+        self.num_player = len(player_mode)
+        pawns = [F"P{i}_pawn{j}" for i in range(self.num_player) for j in range(4)]
         pawns_mode = [mode for mode in player_mode for _ in range(4)]
-        initial_loc = ["not_in_game" for _ in range(0, player_mode*4)]
+        initial_loc = ["not in game" for _ in range(0, self.num_player*4)]
+        inital_pos = ["not in game" for _ in range(0, self.num_player*4)]
+        num_home_zone = [0 for _ in range(0, self.num_player*4)]
         self.main_df = pd.DataFrame({
             "pawn_id": pawns,
             "mode": pawns_mode,
-            "loc": initial_loc
+            "loc": initial_loc,
+            "position": inital_pos,
+            "num_home_zone": num_home_zone
         })
-
+    
     def move(self, player, rolled_number):
         target_pawns_df = self.main_df[~self.main_df['pawn_id'].str.startswith(F"P{player}_")]
         loc_target_pawns = target_pawns_df["loc"].values
@@ -49,11 +54,14 @@ class SmartPawn:
         
         can_end_round = [self.__can_end_round(F"P{player}_pawn{i}", rolled_number) for i in range(4)]
 
+        distances_home_zone = [self.__distance_home_zone(F"P{player}_pawn{i}") for i in range(4)]
+
         return {"can_move": can_move,
                 "can_hit": can_hit,
                 "can_come_in_game": can_come_in_game,
-                "can_end_round": can_end_round}
-    
+                "can_end_round": can_end_round,
+                "distance_home_zone": distances_home_zone}
+
     def __can_move(self, pawn_id):
         pos_pawn = self.main_df.loc[self.main_df["pawn_id"] == pawn_id, "position"].values[0]
         if pos_pawn == "in game":
@@ -67,8 +75,8 @@ class SmartPawn:
             return 0
         
         loc_pawn += rolled_number
-        if loc_pawn > 47:
-            loc_pawn = loc_pawn - 47
+        if loc_pawn > self.count_homes:
+            loc_pawn = loc_pawn - self.count_homes
             # 47, Number of houses in the game
         
         if loc_pawn in loc_target_pawns:
@@ -121,4 +129,3 @@ class SmartPawn:
         else:
             distance = self.home_zone[player] - loc_pawn
         return distance
-
