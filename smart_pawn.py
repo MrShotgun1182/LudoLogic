@@ -2,9 +2,11 @@ import pandas as pd
 import numpy as np
 
 class SmartPawn:
-    aggressive = {}
-    kind = {}
-    Strategy = {}
+    count_homes = 47
+    aggressive = {"can_move_rate": 0.01, "can_hit_rate": 0.8, "can_come_in_game_rate": 0.5, "can_end_round_rate": 0.5}
+    kind = {"can_move_rate": 0.01, "can_hit_rate": 0.01, "can_come_in_game_rate": 0.7, "can_end_round_rate": 0.8}
+    strategy = {"can_move_rate": 0.01, "can_hit_rate": 0.5, "can_come_in_game_rate": 0.6, "can_end_round_rate": 0.8}
+    stupid = {"can_move_rate": 0.01, "can_hit_rate": 0.01, "can_come_in_game_rate": 0.8, "can_end_round_rate": 0.1}
     def __init__(self, player_mode):
         pawns = [F"P{i}_pawn{j}" for i in range(player_mode) for j in range(4)]
         pawns_mode = [mode for mode in player_mode for _ in range(4)]
