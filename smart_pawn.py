@@ -97,4 +97,18 @@ class SmartPawn:
             else:
                 return 0
         return 0
+    
+    def __distance_home_zone(self, pawn_id):
+        pos_pawn = self.main_df.loc[self.main_df["pawn_id"] == pawn_id, "position"].values[0]
+        if pos_pawn != "in game":
+            return -1
+
+        player = pawn_id[:2]
+        loc_pawn = self.main_df.loc[self.main_df["pawn_id"] == pawn_id, "loc"].values[0]
+
+        if loc_pawn in range(self.start_zone[player], self.count_homes + 1):
+            distance = (self.count_homes - loc_pawn) + self.home_zone[player]
+        else:
+            distance = self.home_zone[player] - loc_pawn
+        return distance
 
