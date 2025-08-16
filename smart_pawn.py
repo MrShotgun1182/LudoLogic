@@ -37,8 +37,11 @@ class SmartPawn:
         pawns_profile = pd.DataFrame(
             self.__make_pawns_profile(player, rolled_number, target_pawns_df, loc_target_pawns),
             index=[f"P{player}_pawn{i}" for i in range(4)]
-        )        
-        print(pawns_profile)
+        )
+        pawns_profile = pawns_profile.reset_index()
+        pawns_profile.rename(columns={"index": "pawn_id"}, inplace=True)
+
+        best_paswn = self.__finde_best_pawn(pawns_profile)
     
     # private methods:
 
