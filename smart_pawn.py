@@ -129,3 +129,24 @@ class SmartPawn:
         else:
             distance = self.home_zone[player] - loc_pawn
         return distance
+    
+    def __finde_best_pawn(self, pawns_profile:pd.DataFrame):
+        player = pawns_profile["pawn_id"].values[0][:2]
+        player_mode = self.main_df.loc[self.main_df["pawn_id"] == F"{player}_pawn0"].values[0][1]
+        pawn_behavior = getattr(SmartPawn, player_mode)
+        pawn_behavior = list(pawn_behavior.values())
+        # print(pawns_profile)
+        # print(pawns_profile.loc[pawns_profile["pawn_id"] == F"{player}_pawn0"].values[0])
+        
+        pawns_rating = {"pawn0": 0,
+                        "pawn1": 0,
+                        "pawn2": 0,
+                        "pawn3": 0}
+        
+        for i, row in enumerate(pawns_profile.values[:, 1:]):
+            pawn_id = F"pawn{i}"
+            pawn_score = 0
+            print(pawn_id)
+            for j, column in enumerate(row):
+                pawn_score += column * pawn_behavior[j]
+            print(pawn_score)
