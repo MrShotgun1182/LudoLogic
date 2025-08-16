@@ -3,10 +3,10 @@ import numpy as np
 
 class SmartPawn:
     count_homes = 47
-    aggressive = {"can_move_rate": 0.01, "can_hit_rate": 0.8, "can_come_in_game_rate": 0.5, "can_end_round_rate": 0.5}
-    kind = {"can_move_rate": 0.01, "can_hit_rate": 0.01, "can_come_in_game_rate": 0.7, "can_end_round_rate": 0.8}
-    strategy = {"can_move_rate": 0.01, "can_hit_rate": 0.5, "can_come_in_game_rate": 0.6, "can_end_round_rate": 0.8}
-    stupid = {"can_move_rate": 0.01, "can_hit_rate": 0.01, "can_come_in_game_rate": 0.8, "can_end_round_rate": 0.1}
+    aggressive = {"can_move_rate": 0.01, "can_hit_rate": 0.8, "can_come_in_game_rate": 0.5, "can_end_round_rate": 0.5, "distance_home_zone": 0}
+    kind = {"can_move_rate": 0.01, "can_hit_rate": 0.01, "can_come_in_game_rate": 0.7, "can_end_round_rate": 0.8, "distance_home_zone": 0}
+    strategy = {"can_move_rate": 0.01, "can_hit_rate": 0.5, "can_come_in_game_rate": 0.6, "can_end_round_rate": 0.8, "distance_home_zone": 0}
+    stupid = {"can_move_rate": 0.01, "can_hit_rate": 0.01, "can_come_in_game_rate": 0.8, "can_end_round_rate": 0.1, "distance_home_zone": 0}
     home_zone = {"P0": 46,
                   "P1": 10,
                   "P2": 22,
