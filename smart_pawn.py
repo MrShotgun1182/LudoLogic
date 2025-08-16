@@ -153,3 +153,4 @@ class SmartPawn:
             for j, column in enumerate(row):
                 pawn_score += column * pawn_behavior[j]
             print(pawn_score)
+        
