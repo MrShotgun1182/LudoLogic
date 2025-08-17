@@ -41,7 +41,8 @@ class SmartPawn:
         pawns_profile = pawns_profile.reset_index()
         pawns_profile.rename(columns={"index": "pawn_id"}, inplace=True)
 
-        best_paswn = self.__finde_best_pawn(pawns_profile)
+        best_pawn = self.__finde_best_pawn(pawns_profile)
+
     
     # private methods:
 
@@ -55,7 +56,7 @@ class SmartPawn:
         else:
             can_come_in_game = [0 for _ in range(4)]
         
-        can_end_round = [self.__can_end_round(F"P{player}_pawn{i}", rolled_number) for i in range(4)]
+        can_end_round, _ = [self.__can_end_round(F"P{player}_pawn{i}", rolled_number) for i in range(4)]
 
         distances_home_zone = [self.__distance_home_zone(F"P{player}_pawn{i}") for i in range(4)]
 
@@ -110,7 +111,7 @@ class SmartPawn:
                 if num_home_zone_pawn in [1, 2, 3, 4]: 
                     full_home_zone = self.main_df[self.main_df["pawn_id"].str.startswith(player)]["num_home_zone"].values
                     if not num_home_zone_pawn in full_home_zone:
-                        return 1
+                        return 1, num_home_zone_pawn
                     else: 
                         return 0
                 else:
@@ -149,8 +150,9 @@ class SmartPawn:
         for i, row in enumerate(pawns_profile.values[:, 1:]):
             pawn_id = F"pawn{i}"
             pawn_score = 0
-            print(pawn_id)
             for j, column in enumerate(row):
                 pawn_score += column * pawn_behavior[j]
-            print(pawn_score)
+            pawns_rating[pawn_id] = pawn_score
         
+        return max(pawns_rating, key=pawns_rating.get)
+    
